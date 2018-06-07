@@ -97,6 +97,10 @@ namespace Mail2Bug
             {
                 Logger.ErrorFormat("Exception caught in main - aborting. {0}", exception);
             }
+#if DEBUG
+            Console.Write("Hit enter");
+            Console.ReadLine();
+#endif
         }
 
         private static Config TryLoadConfig(string configFile)
