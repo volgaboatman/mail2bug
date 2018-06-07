@@ -20,9 +20,10 @@ namespace Mail2Bug
         /// The main entry point for the windows application.
         /// </summary>
         [STAThread]
-        public static void Main(string[] args) // string[] args
+        public static int Main(string[] args) // string[] args
         {
-            if(args.Contains("-break"))
+            int rc = 0;
+            if (args.Contains("-break"))
             {
                 Logger.Info("Breaking into debugger");
                 Debugger.Break();
@@ -96,11 +97,14 @@ namespace Mail2Bug
             catch (Exception exception)
             {
                 Logger.ErrorFormat("Exception caught in main - aborting. {0}", exception);
+                rc = 1;
             }
-#if DEBUG
-            Console.Write("Hit enter");
-            Console.ReadLine();
-#endif
+            if (args.Contains("-wait"))
+            {
+                Console.Write("Hit enter");
+                Console.ReadLine();
+            }
+            return rc;
         }
 
         private static Config TryLoadConfig(string configFile)
