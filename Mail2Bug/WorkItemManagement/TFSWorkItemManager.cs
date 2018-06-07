@@ -102,12 +102,13 @@ namespace Mail2Bug.WorkItemManagement
         {
             var credentials = new List<TfsClientCredentials>();
 
-            credentials.AddRange(GetOAuthCredentials());
-            credentials.AddRange(GetServiceIdentityCredentials());
-            credentials.AddRange(GetServiceIdentityPatCredentials());
-            credentials.AddRange(GetBasicAuthCredentials());
-            credentials.Add(new TfsClientCredentials(new WindowsCredential(false), false));
-            credentials.Add(new TfsClientCredentials(true));
+            credentials.Add(new TfsClientCredentials(new WindowsCredential(true), false));
+            //credentials.AddRange(GetOAuthCredentials());
+            //credentials.AddRange(GetServiceIdentityCredentials());
+            //credentials.AddRange(GetServiceIdentityPatCredentials());
+            //credentials.AddRange(GetBasicAuthCredentials());
+            //credentials.Add(new TfsClientCredentials(new WindowsCredential(false), false));
+            //credentials.Add(new TfsClientCredentials(true));
 
             return credentials;
         }
@@ -133,32 +134,34 @@ namespace Mail2Bug.WorkItemManagement
 
         private IEnumerable<TfsClientCredentials> GetOAuthCredentials()
         {
-            try
-            {
-                var usernameAndPassword = GetServiceIdentityUsernameAndPasswordFromConfig();
+            return new List<TfsClientCredentials>();
+            /*
+                        try
+                        {
+                            var usernameAndPassword = GetServiceIdentityUsernameAndPasswordFromConfig();
 
-                if (usernameAndPassword == null || 
-                    string.IsNullOrEmpty(_config.TfsServerConfig.OAuthClientId) ||
-                    string.IsNullOrEmpty(_config.TfsServerConfig.OAuthContext) ||
-                    string.IsNullOrEmpty(_config.TfsServerConfig.OAuthResourceId))
-                {
-                    return new List<TfsClientCredentials>();
-                }
+                            if (usernameAndPassword == null || 
+                                string.IsNullOrEmpty(_config.TfsServerConfig.OAuthClientId) ||
+                                string.IsNullOrEmpty(_config.TfsServerConfig.OAuthContext) ||
+                                string.IsNullOrEmpty(_config.TfsServerConfig.OAuthResourceId))
+                            {
+                                return new List<TfsClientCredentials>();
+                            }
 
-                var userCredential = new UserCredential(usernameAndPassword.Item1, usernameAndPassword.Item2);
-                var authContext = new AuthenticationContext(_config.TfsServerConfig.OAuthContext);
-                var result = authContext.AcquireToken(_config.TfsServerConfig.OAuthResourceId, _config.TfsServerConfig.OAuthClientId, userCredential);
-                var oauthToken = new OAuthTokenCredential(result.AccessToken);
-                return new List<TfsClientCredentials>()
-                {
-                    new TfsClientCredentials(oauthToken)
-                };
-            }
-            catch (Exception ex)
-            {
-                Logger.WarnFormat("Error trying to generate OAuth Token for TFS connection\n{0}", ex);
-                return new List<TfsClientCredentials>();
-            }
+                            var userCredential = new UserCredential(usernameAndPassword.Item1);
+                            var authContext = new AuthenticationContext(_config.TfsServerConfig.OAuthContext);
+                            var result = authContext.AcquireToken(_config.TfsServerConfig.OAuthResourceId, _config.TfsServerConfig.OAuthClientId, userCredential);
+                            var oauthToken = new OAuthTokenCredential(result.AccessToken);
+                            return new List<TfsClientCredentials>()
+                            {
+                                new TfsClientCredentials(oauthToken)
+                            };
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.WarnFormat("Error trying to generate OAuth Token for TFS connection\n{0}", ex);
+                            return new List<TfsClientCredentials>();
+                        }*/
         }
 
         private IEnumerable<TfsClientCredentials> GetServiceIdentityCredentials()
